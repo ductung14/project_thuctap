@@ -8,13 +8,13 @@ class UpdateEventRequest extends FormRequest
 {
     public function authorize()
     {
-        return $this->user()->role === 'organizer';
+        return $this->user()->role === 'admin';
     }
 
     public function rules()
     {
         return [
-            'name' => 'sometimes|required|string|max:255',
+            'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'start_at' => 'sometimes|required|date',

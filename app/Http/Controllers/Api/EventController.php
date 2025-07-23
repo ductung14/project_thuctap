@@ -8,9 +8,14 @@ use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Http\Resources\EventResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+
+
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class EventController extends Controller
 {
+    use AuthorizesRequests;
     public function index(Request $request)
     {
         $query = Event::query();
@@ -47,6 +52,8 @@ class EventController extends Controller
 
     public function store(StoreEventRequest $request)
     {
+        $this->authorize('create', Event::class); // ← Thêm dòng này để gọi Policy
+
         $data = $request->validated();
         $data['user_id'] = $request->user()->id;
 
@@ -66,6 +73,7 @@ class EventController extends Controller
 
     public function update(UpdateEventRequest $request, Event $event)
     {
+        Log::info('CALLED UPDATE CONTROLLER');
         $this->authorize('update', $event);
 
         $data = $request->validated();

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Event;
+use Illuminate\Support\Facades\Log;
 
 class EventPolicy
 {
@@ -15,7 +16,12 @@ class EventPolicy
 
     public function update(User $user, Event $event)
     {
-        return $user->role === 'admin' && $event->user_id === $user->id;
+        Log::info('UPDATE POLICY CHECK', [
+            'user_id' => $user->id,
+            'event_id' => $event->id,
+            'user_role' => $user->role,
+        ]);
+        return in_array($user->role, ['admin', 'organizer']);
     }
 
     public function delete(User $user, Event $event)

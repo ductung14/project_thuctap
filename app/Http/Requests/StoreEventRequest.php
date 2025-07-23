@@ -8,19 +8,19 @@ class StoreEventRequest extends FormRequest
 {
     public function authorize()
     {
-        return $this->user()->role === 'organizer';
+        return $this->user()->role === 'admin';
     }
 
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
             'start_at' => 'required|date',
             'end_at' => 'required|date|after_or_equal:start_at',
-            'max_participants' => 'required|integer|min:1',
-            'category_id' => 'required|exists:categories,id',
+            'capacity' => 'required|integer|min:1',
+            'status' => 'nullable|in:upcoming,ongoing,completed',
         ];
     }
 }
